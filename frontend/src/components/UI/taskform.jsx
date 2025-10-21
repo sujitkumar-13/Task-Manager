@@ -29,8 +29,8 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
 
                 if (res.ok) {
                     toast.success('Task Updated Successfully');
-                    if (onUpdate) onUpdate();              // <-- ensure parent refreshes
-                    if (onAuditRefresh) onAuditRefresh();  // optional: refresh audit list
+                    if (onUpdate) onUpdate();             
+                    if (onAuditRefresh) onAuditRefresh(); 
                     setTimeout(() => onClose(), 600);
                 } else {
                     toast.error('Failed to update task');
@@ -44,7 +44,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
 
                 if (res.ok) {
                     toast.success('Task Created Successfully');
-                    if (onUpdate) onUpdate();              // <-- ensure parent refreshes
+                    if (onUpdate) onUpdate();             
                     if (onAuditRefresh) onAuditRefresh();
                     setTimeout(() => onClose(), 600);
                 } else {    

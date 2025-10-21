@@ -52,29 +52,37 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
           </tr>
         </thead>
 
-        <tbody>
-          {currentTasks.map((task) => (
-            <tr key={task._id} className="border-b border-[#2c2f3f]">
-              <td className="px-6 py-4 font-medium whitespace-nowrap">{task.id}</td>
-              <td className="px-6 py-6">{task.title}</td>
-              <td className="px-6 py-6 w-[600px]">{task.description}</td>
-              <td className="px-6 py-6">{task.createdAt.split(" ")[0]}</td>
-              <td className="py-6 flex justify-center gap-3">
-                <button
-                  onClick={() => handleEdit(task)}
-                  className="px-[24px] py-[8px] rounded-lg border border-[#2c2f3f] text-[17px] transition-all hover:bg-[#1b253d] text-[#8FA5C0]"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(task._id)}
-                  className="px-[16px] py-[6px] rounded-lg bg-red-600/70 hover:bg-red-600 text-white text-[17px] transition-all"
-                >
-                  Delete
-                </button>
+        <tbody className="border-b border-[#2c2f3f]">
+          {currentTasks.length > 0 ? (
+            currentTasks.map((task) => (
+              <tr key={task._id} className="border-b border-[#2c2f3f]">
+                <td className="px-6 py-4 font-medium whitespace-nowrap">{task.id}</td>
+                <td className="px-6 py-6">{task.title}</td>
+                <td className="px-6 py-6 w-[600px]">{task.description}</td>
+                <td className="px-6 py-6">{task.createdAt.split(" ")[0]}</td>
+                <td className="py-6 flex justify-center gap-3">
+                  <button
+                    onClick={() => handleEdit(task)}
+                    className="px-[24px] py-[8px] rounded-lg border border-[#2c2f3f] text-[17px] transition-all hover:bg-[#1b253d] text-[#8FA5C0]"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(task._id)}
+                    className="px-[16px] py-[6px] rounded-lg bg-red-600/70 hover:bg-red-600 text-white text-[17px] transition-all"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" className="text-center py-6 text-gray-400">
+                No tasks found.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </>
