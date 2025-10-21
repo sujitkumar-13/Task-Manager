@@ -20,7 +20,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
 
     try {
       if (task) {
-        const res = await fetch(`https://task-manager-ten-fawn.vercel.app/tasks/${task._id}`, {
+        const res = await fetch(`http://localhost:4000/tasks/${task._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(taskData)
@@ -35,7 +35,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
           toast.error('Failed to update task');
         }
       } else {
-        const res = await fetch("https://task-manager-ten-fawn.vercel.app/tasks", {
+        const res = await fetch("http://localhost:4000/tasks", {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(taskData)

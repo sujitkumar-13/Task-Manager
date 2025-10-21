@@ -7,7 +7,7 @@ const AuditLists = () => {
 
     const fetchAuditLogs = async () => {
         try {
-            const res = await fetch("https://task-manager-ten-fawn.vercel.app/audit");
+            const res = await fetch("http://localhost:4000/audit");
             const data = await res.json();
             setLogs(data);
         } catch (err) {

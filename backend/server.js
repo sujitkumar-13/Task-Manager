@@ -1,4 +1,3 @@
-// server.js
 const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
@@ -7,7 +6,7 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(cors({ origin: "http://localhost:5173" })); // allow local frontend
+app.use(cors());
 app.use(express.json());
 
 const client = new MongoClient(process.env.MONGODB_URI);
@@ -21,8 +20,7 @@ async function connectDB() {
 
 connectDB();
 
-// Utility to log audit actions
-async function logAudit(actionType, taskId, updatedContent = "-", notes = "-") {
+async function logAudit(actionType, taskId, updatedContent = "", notes = "-") {
   const logEntry = {
     timestamp: new Date().toISOString().replace("T", " ").slice(0, 16),
     action: actionType,
@@ -33,7 +31,6 @@ async function logAudit(actionType, taskId, updatedContent = "-", notes = "-") {
   await db.collection("auditLogs").insertOne(logEntry);
 }
 
-// CREATE TASK
 app.post("/tasks", async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -49,17 +46,21 @@ app.post("/tasks", async (req, res) => {
       createdAt: new Date().toISOString().slice(0, 16).replace("T", " "),
     };
 
-    await db.collection("tasks").insertOne(newTask);
-    await logAudit("Create Task", newTask.id, `title: "${title}", description: "${description}"`);
+    const result = await db.collection("tasks").insertOne(newTask);
 
-    res.status(201).json(newTask); // return created task
+    await logAudit(
+      "Create Task",
+      newTask.id,
+      `title: "${title}", description: "${description}"`
+    );
+
+    res.status(201).json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// READ TASKS
 app.get("/tasks", async (req, res) => {
   try {
     const tasks = await db.collection("tasks").find().sort({ _id: -1 }).toArray();
@@ -70,7 +71,6 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// UPDATE TASK
 app.put("/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -89,11 +89,15 @@ app.put("/tasks/:id", async (req, res) => {
     );
 
     if (result.modifiedCount === 1) {
-      const updatedTask = await db.collection("tasks").findOne({ _id: new ObjectId(id) });
-      await logAudit("Update Task", task.id, `title: "${title}", description: "${description}"`);
-      res.status(200).json(updatedTask); // return updated task
+      await logAudit(
+        "Update Task",
+        task.id,
+        `title: "${title}", description: "${description}"`
+      );
+
+      res.status(200).json({ message: "Task updated" });
     } else {
-      res.status(404).json({ message: "Task not updated" });
+      res.status(404).json({ message: "Task not found" });
     }
   } catch (err) {
     console.error(err);
@@ -101,13 +105,14 @@ app.put("/tasks/:id", async (req, res) => {
   }
 });
 
-// DELETE TASK
 app.delete("/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const task = await db.collection("tasks").findOne({ _id: new ObjectId(id) });
 
-    const result = await db.collection("tasks").deleteOne({ _id: new ObjectId(id) });
+    const result = await db
+      .collection("tasks")
+      .deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 1) {
       await logAudit("Delete Task", task ? task.id : id, "-");
@@ -121,7 +126,6 @@ app.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-// GET AUDIT LOGS
 app.get("/audit", async (req, res) => {
   try {
     const logs = await db.collection("auditLogs").find().sort({ _id: -1 }).toArray();
