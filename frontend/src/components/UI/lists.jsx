@@ -17,7 +17,7 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
 
   const handleDelete = async (taskId) => {
     try {
-      const res = await fetch(`http://localhost:4000/tasks/${taskId}`, {
+      const res = await fetch(`https://task-manager-mocha-two-34.vercel.app/tasks/${taskId}`, {
         method: "DELETE",
       });
 

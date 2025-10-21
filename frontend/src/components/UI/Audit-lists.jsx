@@ -7,7 +7,7 @@ const AuditLists = () => {
 
     const fetchAuditLogs = async () => {
         try {
-            const res = await fetch("http://localhost:4000/audit");
+            const res = await fetch("https://task-manager-mocha-two-34.vercel.app/audit");
             const data = await res.json();
             setLogs(data);
         } catch (err) {
