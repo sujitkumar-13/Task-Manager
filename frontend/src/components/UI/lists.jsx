@@ -16,8 +16,6 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
   };
 
   const handleDelete = async (taskId) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
-
     try {
       const res = await fetch(`http://localhost:4000/tasks/${taskId}`, {
         method: "DELETE",
@@ -60,7 +58,7 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
               <td className="px-6 py-4 font-medium whitespace-nowrap">{task.id}</td>
               <td className="px-6 py-6">{task.title}</td>
               <td className="px-6 py-6 w-[600px]">{task.description}</td>
-              <td className="px-6 py-6">{task.createdAt}</td>
+              <td className="px-6 py-6">{task.createdAt.split(" ")[0]}</td>
               <td className="py-6 flex justify-center gap-3">
                 <button
                   onClick={() => handleEdit(task)}
