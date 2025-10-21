@@ -3,68 +3,69 @@ import Showing from "./showing";
 import Lists from "./lists";
 import Taskform from "./taskform";
 
-const Chart = ({ showForm, setShowForm }) => {
-  const [tasks, setTasks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const tasksPerPage = 5;
+const Chart = ({ showForm, setShowForm, searchQuery }) => {
+    const [tasks, setTasks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const tasksPerPage = 5;
 
-  const fetchTasks = async () => {
-    try {
-      const res = await fetch("http://localhost:4000/tasks");
-      const data = await res.json();
-      setTasks(data);
-    } catch (err) {
-      console.error("Failed to fetch tasks:", err);
-    }
-  };
+    const fetchTasks = async () => {
+        try {
+            const res = await fetch("http://localhost:4000/tasks");
+            const data = await res.json();
+            setTasks(data);
+        } catch (err) {
+            console.error("Failed to fetch tasks:", err);
+        }
+    };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+    useEffect(() => {
+        fetchTasks();
+    }, []);
 
-  const indexOfLastTask = currentPage * tasksPerPage;
-  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
-  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+    // ✅ filter tasks based on search
+    const filteredTasks = tasks.filter(
+        (task) =>
+            task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            task.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-  const totalPages = Math.ceil(tasks.length / tasksPerPage);
+    const indexOfLastTask = currentPage * tasksPerPage;
+    const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+    const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
+    const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
-  };
+    const handleNext = () => {
+        if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    };
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
+    const handlePrev = () => {
+        if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    };
 
-  return (
-    <div>
-      {!showForm ? (
-        <div className="p-4">
-          <div className="rounded-2xl border border-[#2c2f3f] overflow-auto">
-            <Lists
-              currentTasks={currentTasks}
-              fetchTasks={fetchTasks}
-              setTasks={setTasks}
-              tasks={tasks}
-            />
-            <div className="p-[20px] flex justify-between items-center">
-              <Showing
-                currentPage={currentPage}
-                totalTasks={tasks.length}
-                handleNext={handleNext}
-                handlePrev={handlePrev}
-                tasksPerPage={tasksPerPage}
-              />
-            </div>
-          </div>
+    return (
+        <div>
+            {!showForm ? (
+                <div className="lg:p-4 p-0">
+                    <div className="lg:rounded-2xl border border-[#2c2f3f] overflow-auto mt-4">
+                        <Lists currentTasks={currentTasks} fetchTasks={fetchTasks} setTasks={setTasks} />
+                        <div className="p-[20px] flex justify-between items-center">
+                            <Showing
+                                currentPage={currentPage}
+                                totalTasks={filteredTasks.length}
+                                handleNext={handleNext}
+                                handlePrev={handlePrev}
+                                tasksPerPage={tasksPerPage}
+                            />
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="bg-black py-[60px]">
+                    <Taskform onClose={() => setShowForm(false)} onUpdate={fetchTasks} setTasks={setTasks} />
+                </div>
+            )}
         </div>
-      ) : (
-        <div className="bg-black py-[60px]">
-          <Taskform onClose={() => setShowForm(false)} onUpdate={fetchTasks} setTasks={setTasks} />
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Chart;

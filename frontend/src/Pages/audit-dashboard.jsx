@@ -5,7 +5,7 @@ const Audit = () => {
     return (
         <div>
             <Logo />
-            <div className="p-[20px]">
+            <div className="sm:p-[20px]">
                 <AuditChart />
             </div>
         </div>

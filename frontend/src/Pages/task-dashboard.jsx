@@ -5,7 +5,7 @@ const Task = () => {
     return (
         <div>
             <Logo />
-            <div className="p-[20px]">
+            <div className="lg:p-[20px] p-[10px]">
                 <TaskTable />
             </div>
         </div>
