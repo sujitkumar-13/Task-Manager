@@ -10,7 +10,6 @@ const Navbar = () => {
 
     return (
         <>
-            {/* Hamburger for small screens */}
             <button
                 className="xl:hidden fixed top-[13px] left-4 z-50  p-2 rounded-xl "
                 onClick={() => setOpen(true)}
@@ -19,13 +18,11 @@ const Navbar = () => {
                 <GiHamburgerMenu className="text-[28px] text-[#8FA5C0]" />
             </button>
 
-            {/* Sidebar navbar */}
             <div
                 className={`bg-[#0b1330] max-w-[300px] w-full xl:h-auto h-screen text-[#8FA5C0] fixed top-0  left-0 z-40 transition-transform duration-300
                 ${open ? "translate-x-0" : "-translate-x-full"} xl:translate-x-0 xl:static xl:block`}
                 style={{ boxShadow: open ? "0 0 0 100vw rgba(0,0,0,0.5)" : "none" }}
             >
-                {/* Close button for mobile */}
                 <div className="xl:hidden flex justify-end  border-b border-[#142052] pb-[10px] ">
                     <button
                         onClick={() => setOpen(false)}

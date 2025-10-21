@@ -11,7 +11,6 @@ app.use(express.json());
 const client = new MongoClient(process.env.MONGODB_URI);
 let db;
 
-// Connect once (safe for Vercel)
 async function connectDB() {
   if (!db) {
     await client.connect();
@@ -21,7 +20,6 @@ async function connectDB() {
 }
 connectDB();
 
-// Helper: log audit
 async function logAudit(actionType, taskId, updatedContent = "", notes = "-") {
   await db.collection("auditLogs").insertOne({
     timestamp: new Date().toISOString().replace("T", " ").slice(0, 16),
@@ -32,7 +30,6 @@ async function logAudit(actionType, taskId, updatedContent = "", notes = "-") {
   });
 }
 
-// --- ROUTES ---
 app.get("/", (req, res) => {
   res.json({ message: "API is running 🚀" });
 });
@@ -119,5 +116,4 @@ app.get("/audit", async (req, res) => {
   }
 });
 
-// ✅ Export handler for Vercel
 module.exports = app;

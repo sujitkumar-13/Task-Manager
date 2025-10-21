@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   useEffect(() => {
     if (task) {
@@ -20,7 +22,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
 
     try {
       if (task) {
-        const res = await fetch(`https://task-manager-mocha-two-34.vercel.app/tasks/${task._id}`, {
+        const res = await fetch(`${BASE_URL}/tasks/${task._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(taskData)
@@ -35,7 +37,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
           toast.error('Failed to update task');
         }
       } else {
-        const res = await fetch("https://task-manager-mocha-two-34.vercel.app/tasks", {
+        const res = await fetch(`${BASE_URL}/tasks`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(taskData)

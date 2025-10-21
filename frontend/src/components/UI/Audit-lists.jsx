@@ -4,10 +4,11 @@ const AuditLists = () => {
     const [logs, setLogs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const logsPerPage = 5;
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
     const fetchAuditLogs = async () => {
         try {
-            const res = await fetch("https://task-manager-mocha-two-34.vercel.app/audit");
+            const res = await fetch(`${BASE_URL}/audit`);
             const data = await res.json();
             setLogs(data);
         } catch (err) {
@@ -34,7 +35,6 @@ const AuditLists = () => {
 
     return (
         <div className="w-full">
-            {/* Table wrapper for horizontal scroll */}
             <div className="overflow-x-auto">
                 <table className="w-full min-w-[600px] text-left border-collapse">
                     <thead className="text-sm sm:text-base border-b border-[#2c2f3f] text-gray-300">
@@ -83,7 +83,6 @@ const AuditLists = () => {
                 </table>
             </div>
 
-            {/* Pagination */}
              <div className="p-[20px] flex justify-between items-center ">
                 <h1 className="text-[#c4c0c0]">
                     Showing {Math.min(logsPerPage, logs.length - indexOfFirstLog)} of{" "}

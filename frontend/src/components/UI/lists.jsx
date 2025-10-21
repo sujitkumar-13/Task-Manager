@@ -4,6 +4,7 @@ import Taskform from "./taskform";
 const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
   const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleEdit = (task) => {
     setEditingTask(task);
@@ -17,7 +18,7 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
 
   const handleDelete = async (taskId) => {
     try {
-      const res = await fetch(`https://task-manager-mocha-two-34.vercel.app/tasks/${taskId}`, {
+      const res = await fetch(`${BASE_URL}/tasks/${taskId}`, {
         method: "DELETE",
       });
 
@@ -32,6 +33,8 @@ const Lists = ({ currentTasks, fetchTasks, setTasks }) => {
       alert("Server error");
     }
   };
+
+  
 
   return (
     <>

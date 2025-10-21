@@ -4,13 +4,14 @@ import Lists from "./lists";
 import Taskform from "./taskform";
 
 const Chart = ({ showForm, setShowForm, searchQuery }) => {
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
     const [tasks, setTasks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const tasksPerPage = 5;
 
     const fetchTasks = async () => {
   try {
-    const res = await fetch("https://task-manager-mocha-two-34.vercel.app/tasks");
+    const res = await fetch(`${BASE_URL}/tasks`);
     const data = await res.json();
     if (Array.isArray(data)) {
       setTasks(data);
@@ -28,7 +29,6 @@ const Chart = ({ showForm, setShowForm, searchQuery }) => {
         fetchTasks();
     }, []);
 
-    // ✅ filter tasks based on search
     const filteredTasks = tasks.filter(
         (task) =>
             task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
