@@ -9,14 +9,20 @@ const Chart = ({ showForm, setShowForm, searchQuery }) => {
     const tasksPerPage = 5;
 
     const fetchTasks = async () => {
-        try {
-            const res = await fetch("http://localhost:4000/tasks");
-            const data = await res.json();
+    try {
+        const res = await fetch("http://localhost:4000/tasks");
+        const data = await res.json();
+        if (Array.isArray(data)) {
             setTasks(data);
-        } catch (err) {
-            console.error("Failed to fetch tasks:", err);
+        } else {
+            console.error("Unexpected response:", data);
+            setTasks([]); // fallback
         }
-    };
+    } catch (err) {
+        console.error("Failed to fetch tasks:", err);
+        setTasks([]);
+    }
+};
 
     useEffect(() => {
         fetchTasks();

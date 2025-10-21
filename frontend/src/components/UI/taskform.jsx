@@ -21,7 +21,7 @@ const Taskform = ({ onClose, task, onUpdate, onAuditRefresh }) => {
 
         try {
             if (task) {
-                const res = await fetch(`http://localhost:4000/tasks/${task._id}`, {
+                const res = await fetch(`https://task-manager-one-alpha-62.vercel.app/tasks/${task._id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(taskData)

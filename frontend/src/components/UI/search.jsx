@@ -1,3 +1,6 @@
+
+import { HiMagnifyingGlass } from "react-icons/hi2";
+
 const SearchBox = ({ searchQuery, setSearchQuery }) => {
     return (
         <div className="relative flex items-center text-[#c4c0c0] xl:w-[40%]" id="searchBox">
@@ -12,3 +15,5 @@ const SearchBox = ({ searchQuery, setSearchQuery }) => {
         </div>
     );
 };
+
+export default SearchBox
