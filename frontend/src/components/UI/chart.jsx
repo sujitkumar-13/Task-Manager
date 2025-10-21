@@ -10,7 +10,7 @@ const Chart = ({ showForm, setShowForm, searchQuery }) => {
 
     const fetchTasks = async () => {
     try {
-        const res = await fetch("http://localhost:4000/tasks");
+        const res = await fetch("https://task-manager-one-alpha-62.vercel.app/tasks");
         const data = await res.json();
         if (Array.isArray(data)) {
             setTasks(data);
